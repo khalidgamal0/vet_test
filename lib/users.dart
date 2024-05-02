@@ -1,18 +1,16 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:vet_chat/pusher.dart';
 
 class UserChat extends StatefulWidget {
   const UserChat({super.key});
-
   @override
   State<UserChat> createState() => _UserChatState();
 }
-
 class _UserChatState extends State<UserChat> {
-  UserModel? userModel;
+  List <UserModel> userModel=[];
 
   @override
   Widget build(BuildContext context) {
@@ -35,12 +33,14 @@ class _UserChatState extends State<UserChat> {
           child: ListView.separated(
             itemBuilder: (context, index) =>  InkWell(
               onTap: (){
+                // Navigator.push(context, MaterialPageRoute(builder:(context) => const ChatScreen(),));
                 getAllDoc();
               },
               child: Row(
                 children: [
                   const CircleAvatar(
-                    backgroundImage: NetworkImage(''),
+                    radius: 30,
+                    backgroundImage: NetworkImage('http://api.ejark.sa/assets/images/avatar.png',),
                   ),
                   const SizedBox(width: 15,),
                   Column(
@@ -76,7 +76,7 @@ class _UserChatState extends State<UserChat> {
 
   getAllDoc() async {
     final url =
-    Uri.parse('http://192.168.0.105/public/api/user');
+    Uri.parse('http://192.168.1.12/public/api/user');
     final headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
@@ -93,12 +93,12 @@ class _UserChatState extends State<UserChat> {
         var res = json.decode(response.body);
         log(res.toString());
         for (var item in res) {
-          userModel=UserModel.fromJson(item);
+          userModel.add(UserModel.fromJson(item));
           setState(() {
           });
         }
       } else {
-        log('Failed to get use: ${response.statusCode}');
+        log('Failed to get use: ${response.body}');
       }
     } catch (e) {
       log('Error getting user: $e');

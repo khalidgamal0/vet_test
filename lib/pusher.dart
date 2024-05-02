@@ -23,7 +23,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    messages = [];
+    // messages = [];
     getAllMessage();
     setState(() {
 
@@ -247,7 +247,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   getAllMessage() async {
     final url =
-        Uri.parse('http://192.168.0.105/public/api/messages?receiver_id=8');
+        Uri.parse('http://192.168.1.12/public/api/messages?receiver_id=8');
     final headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
@@ -266,6 +266,9 @@ class _ChatScreenState extends State<ChatScreen> {
         for (var item in res['data']) {
           messages.add(MessageModel.fromJson((item)));
         }
+        setState(() {
+
+        });
       } else {
         log('Failed to get message. Status code: ${response.statusCode}');
       }
@@ -278,7 +281,7 @@ class _ChatScreenState extends State<ChatScreen> {
     setState(() {
       isLoading = true;
     });
-    final url = Uri.parse('http://192.168.0.105/public/api/messages');
+    final url = Uri.parse('http://192.168.1.12/public/api/messages');
     final headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
